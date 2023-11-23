@@ -10,6 +10,13 @@
         <readme>docs\README.md</readme>
         <tags>Selenium WebDriver</tags>
         <repository type="git">https://github.com/maik-hasler/SeleniumSharper</repository>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="netstandard2.0" targetFramework="netstandard2.0" />
+            <frameworkAssembly assemblyName="netstandard2.1" targetFramework="netstandard2.1" />
+            <frameworkAssembly assemblyName="Microsoft.NETCore.App" targetFramework="net6.0" />
+            <frameworkAssembly assemblyName="Microsoft.NETCore.App" targetFramework="net7.0" />
+            <frameworkAssembly assemblyName="Microsoft.NETCore.App" targetFramework="net8.0" />
+        </frameworkAssemblies>
     </metadata>
     <files>
         <file src="README.md" target="docs\" />
