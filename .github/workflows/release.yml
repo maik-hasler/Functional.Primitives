@@ -8,6 +8,7 @@ on:
 
 env:
   PROJECT_PATH: src/Functional.Primitives.Maybe.csproj
+  NUSPEC_PATH: .nuspec
   PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/output
 
 jobs:
@@ -17,7 +18,6 @@ jobs:
     strategy:
       matrix:
         dotnet-version: ["6.0", "7.0", "8.0"]
-        netstandard-version: ["2.0", "2.1"]
 
     steps:
       - name: Checkout
@@ -39,7 +39,7 @@ jobs:
         uses: battila7/get-version-action@v2
 
       - name: Pack project
-        run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_PATH }}
+        run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols -p:PackageVersion=${{ steps.version.outputs.version-without-v }} -p:PackagePath=${{ env.NUSPEC_PATH }} --output ${{ env.PACKAGE_OUTPUT_PATH }}
 
       - name: Push package
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_PATH }}/*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }} --skip-duplicate
