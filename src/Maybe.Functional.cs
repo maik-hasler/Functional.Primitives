@@ -14,10 +14,12 @@ public readonly partial struct Maybe<T>
     /// <returns>The result of the invoked function.</returns>
     public TResult Match<TResult>(
         Func<T, TResult> funcIfSomething,
-        Func<TResult> funcIfNothing) 
-            => (_hasValueFlag & 1) != 1
-                ? funcIfSomething(_value)
-                : funcIfNothing();
+        Func<TResult> funcIfNothing)
+    {
+        return (_hasValueFlag & 1) != 1
+            ? funcIfSomething(_value)
+            : funcIfNothing();
+    }
 
     /// <summary>
     /// Matches the current <see cref="Maybe{T}"/> instance with two actions.
@@ -42,11 +44,13 @@ public readonly partial struct Maybe<T>
     /// <returns>A new <see cref="Maybe{TResult}"/> instance.</returns>
     public Maybe<TResult> Map<TResult>(
         Func<T, TResult> convert)
-        where TResult : class => 
-            Match(
-                value => Maybe<TResult>.From(convert(value)),
-                () => default
-            );
+        where TResult : class
+    {
+        return Match(
+            value => Maybe<TResult>.From(convert(value)),
+            () => default
+        );
+    }
 
     /// <summary>
     /// Tries to get the value of the current <see cref="Maybe{T}"/> instance.
@@ -55,7 +59,7 @@ public readonly partial struct Maybe<T>
     /// <returns><c>true</c> if the instance has a value; otherwise, <c>false</c>.</returns>
     [Pure]
     public bool TryGetValue(
-        [NotNullWhen(true), MaybeNullWhen(false)] out T value)
+        [NotNullWhen(true)] out T value)
     {
         value = _value;
 
@@ -66,8 +70,11 @@ public readonly partial struct Maybe<T>
     /// Gets the value of the current <see cref="Maybe{T}"/> instance or throws an exception.
     /// </summary>
     /// <returns>The value of the instance if present.</returns>
-    public T GetValueOrThrow() => GetValueOrThrow(
-        $"Cannot access assigned value on {nameof(Maybe<T>)} without a value to type {nameof(T)}.");
+    public T GetValueOrThrow()
+    {
+        return GetValueOrThrow(
+            $"Cannot access assigned value on {nameof(Maybe<T>)} without a value to type {nameof(T)}.");
+    }
 
     /// <summary>
     /// Gets the value of the current <see cref="Maybe{T}"/> instance or throws a custom exception.
@@ -76,8 +83,10 @@ public readonly partial struct Maybe<T>
     /// <returns>The value of the instance if present.</returns>
     [Pure]
     public T GetValueOrThrow(
-        string exceptionMessage) => 
-            GetValueOrThrow(new InvalidOperationException(exceptionMessage));
+        string exceptionMessage)
+    {
+        return GetValueOrThrow(new InvalidOperationException(exceptionMessage));
+    }
 
     /// <summary>
     /// Gets the value of the current <see cref="Maybe{T}"/> instance or throws a custom exception.
@@ -86,10 +95,12 @@ public readonly partial struct Maybe<T>
     /// <returns>The value of the instance if present.</returns>
     [Pure]
     public T GetValueOrThrow(
-        Exception exception) => 
-            (_hasValueFlag & 1) != 1
-                ? _value
-                : throw exception;
+        Exception exception)
+    {
+        return (_hasValueFlag & 1) != 1
+            ? _value
+            : throw exception;
+    }
 
     /// <summary>
     /// Gets the value of the current <see cref="Maybe{T}"/> instance or a default value.

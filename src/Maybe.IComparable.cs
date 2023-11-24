@@ -18,8 +18,7 @@ public readonly partial struct Maybe<T>
     public int CompareTo(
         object? obj)
     {
-        if (obj == null)
-            throw new ArgumentNullException(nameof(obj));
+        ArgumentNullException.ThrowIfNull(obj);
 
         if (obj is Maybe<T> other)
             return CompareTo(other);
@@ -58,8 +57,7 @@ public readonly partial struct Maybe<T>
     public int CompareTo(
         T? other)
     {
-        if (other == null)
-            throw new ArgumentNullException(nameof(other));
+        ArgumentNullException.ThrowIfNull(other);
 
         if (_hasValueFlag == 1)
         {

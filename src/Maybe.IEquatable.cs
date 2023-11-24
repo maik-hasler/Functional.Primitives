@@ -3,60 +3,94 @@
 namespace Functional.Primitives.Maybe;
 
 public readonly partial struct Maybe<T>
-    : IEquatable<Maybe<T>>
+    : IEquatable<T>,
+    IEquatable<Maybe<T>>
 {
-    /// <summary>
-    /// Determines whether the current <see cref="Maybe{T}"/> instance is equal to another <see cref="Maybe{T}"/> instance.
-    /// </summary>
-    /// <param name="other">The <see cref="Maybe{T}"/> instance to compare with the current instance.</param>
-    /// <returns><c>true</c> if the instances are equal; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc />
     [Pure]
     public bool Equals(
-        Maybe<T> other) =>
-            _hasValueFlag == other._hasValueFlag 
-            && EqualityComparer<T>.Default.Equals(_value, other._value);
+        T? other)
+    {
+        return EqualityComparer<T>.Default.Equals(_value, other);
+    }
 
-    /// <summary>
-    /// Determines whether the current <see cref="Maybe{T}"/> instance is equal to the specified object.
-    /// </summary>
-    /// <param name="obj">The object to compare with the current instance.</param>
-    /// <returns><c>true</c> if the instances are equal; otherwise, <c>false</c>.</returns>
+    /// <inheritdoc />
+    [Pure]
+    public bool Equals(
+        Maybe<T> other)
+    {
+        return _hasValueFlag == other._hasValueFlag
+            && EqualityComparer<T>.Default.Equals(_value, other._value);
+    }
+
+    /// <inheritdoc />
     [Pure]
     public override bool Equals(
-        object? obj) => 
-            obj != null 
-            && obj is Maybe<T> other 
-            && Equals(other);
+        object? obj)
+    {
+        return obj switch
+        {
+            null => false,
+            T value => Equals(value),
+            Maybe<T> maybe => Equals(maybe),
+            _ => false
+        };
+    }
 
-    /// <summary>
-    /// Gets the hash code for the current <see cref="Maybe{T}"/> instance.
-    /// </summary>
-    /// <returns>The hash code of the instance.</returns>
+    /// <inheritdoc />
     [Pure]
-    public override int GetHashCode() =>
-        (_hasValueFlag & 1) == 1 
-            ? _value.GetHashCode() 
+    public override int GetHashCode()
+    {
+        return (_hasValueFlag & 1) == 1
+            ? _value!.GetHashCode()
             : 0;
+    }
 
-    /// <summary>
-    /// Determines whether two <see cref="Maybe{T}"/> instances are equal.
-    /// </summary>
-    /// <param name="left">The first <see cref="Maybe{T}"/> instance to compare.</param>
-    /// <param name="right">The second <see cref="Maybe{T}"/> instance to compare.</param>
-    /// <returns><c>true</c> if the instances are equal; otherwise, <c>false</c>.</returns>
+    [Pure]
     public static bool operator ==(
         Maybe<T> left,
-        Maybe<T> right) =>
-            left.Equals(right);
+        Maybe<T> right)
+    {
+        return left.Equals(right);
+    }
 
-    /// <summary>
-    /// Determines whether two <see cref="Maybe{T}"/> instances are not equal.
-    /// </summary>
-    /// <param name="left">The first <see cref="Maybe{T}"/> instance to compare.</param>
-    /// <param name="right">The second <see cref="Maybe{T}"/> instance to compare.</param>
-    /// <returns><c>true</c> if the instances are not equal; otherwise, <c>false</c>.</returns>
+    [Pure]
     public static bool operator !=(
         Maybe<T> left,
-        Maybe<T> right) =>
-            !left.Equals(right);
+        Maybe<T> right)
+    {
+        return !left.Equals(right);
+    }
+
+    [Pure]
+    public static bool operator ==(
+        T? value,
+        Maybe<T> maybe)
+    {
+        return maybe.Equals(value);
+    }
+
+    [Pure]
+    public static bool operator !=(
+        T? value,
+        Maybe<T> maybe)
+    {
+        return !maybe.Equals(value);
+    }
+
+    [Pure]
+    public static bool operator ==(
+        Maybe<T> maybe,
+        T? value)
+    {
+        return maybe.Equals(value);
+    }
+
+    [Pure]
+    public static bool operator !=(
+        Maybe<T> maybe,
+        T? value)
+    {
+        return !maybe.Equals(value);
+    }
 }
