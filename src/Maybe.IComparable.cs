@@ -10,6 +10,14 @@ namespace Functional.Primitives.Maybe
         IComparable<T>,
         IComparable<Maybe<T>>
     {
+        /// <summary>
+        /// Compares the current <see cref="Maybe{T}"/> instance to the specified object.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current instance.</param>
+        /// <returns>
+        /// A value that indicates the relative order of the objects being compared.
+        /// </returns>
+        [Pure]
         public int CompareTo(
 #if NET6_0_OR_GREATER
             [AllowNull]
@@ -25,6 +33,14 @@ namespace Functional.Primitives.Maybe
             throw new ArgumentException($"Object must be of type {GetType()}.", nameof(obj));
         }
 
+        /// <summary>
+        /// Compares the current <see cref="Maybe{T}"/> instance to another <see cref="Maybe{T}"/> instance.
+        /// </summary>
+        /// <param name="other">The <see cref="Maybe{T}"/> instance to compare with the current instance.</param>
+        /// <returns>
+        /// A value that indicates the relative order of the instances being compared.
+        /// </returns>
+        [Pure]
         public int CompareTo(
             Maybe<T> other)
         {
@@ -37,6 +53,13 @@ namespace Functional.Primitives.Maybe
             return Comparer<T>.Default.Compare(_value, other._value);
         }
 
+        /// <summary>
+        /// Compares the current <see cref="Maybe{T}"/> instance to a specified value of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="other">The value to compare with the current instance.</param>
+        /// <returns>
+        /// A value that indicates the relative order of the instance and the specified value.
+        /// </returns>
         [Pure]
         public int CompareTo(
 #if NET6_0_OR_GREATER

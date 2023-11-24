@@ -7,6 +7,12 @@ namespace Functional.Primitives.Maybe
     public readonly partial struct Maybe<T>
         : ISerializable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Maybe{T}"/> struct
+        /// with serialized data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> containing the serialized data.</param>
+        /// <param name="context">The <see cref="StreamingContext"/> representing the streaming context.</param>
         public Maybe(
             SerializationInfo info,
             StreamingContext context)
@@ -21,6 +27,11 @@ namespace Functional.Primitives.Maybe
             _hasValueFlag = 1;
         }
 
+        /// <summary>
+        /// Populates a <see cref="SerializationInfo"/> with the data needed to serialize the current <see cref="Maybe{T}"/> instance.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The <see cref="StreamingContext"/> representing the streaming context.</param>
         public void GetObjectData(
             SerializationInfo info,
             StreamingContext context)
