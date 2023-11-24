@@ -1,43 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 
-namespace Functional.Primitives.Maybe
+namespace Functional.Primitives.Maybe;
+
+public readonly partial struct Maybe<T>
+    : IEquatable<T>,
+    IEquatable<Maybe<T>>
 {
-    public readonly partial struct Maybe<T>
-        : IEquatable<Maybe<T>>
+    /// <inheritdoc />
+    [Pure]
+    public bool Equals(
+        T? other)
     {
-        [Pure]
-        public bool Equals(
-            Maybe<T> other) =>
-                _hasValueFlag == other._hasValueFlag 
-                && EqualityComparer<T>.Default.Equals(_value, other._value);
+        return EqualityComparer<T>.Default.Equals(_value, other);
+    }
 
-        [Pure]
-        public override bool Equals(
-#if NET6_0_OR_GREATER
-            [AllowNull]
-# endif
-            object obj) => 
-                obj != null 
-                && obj is Maybe<T> other 
-                && Equals(other);
+    /// <inheritdoc />
+    [Pure]
+    public bool Equals(
+        Maybe<T> other)
+    {
+        return _hasValueFlag == other._hasValueFlag
+            && EqualityComparer<T>.Default.Equals(_value, other._value);
+    }
 
-        [Pure]
-        public override int GetHashCode() =>
-            (_hasValueFlag & 1) == 1 
-                ? _value.GetHashCode() 
-                : 0;
+    /// <inheritdoc />
+    [Pure]
+    public override bool Equals(
+        object? obj)
+    {
+        return obj switch
+        {
+            null => false,
+            T value => Equals(value),
+            Maybe<T> maybe => Equals(maybe),
+            _ => false
+        };
+    }
 
-        public static bool operator ==(
-            Maybe<T> left,
-            Maybe<T> right) =>
-                left.Equals(right);
+    /// <inheritdoc />
+    [Pure]
+    public override int GetHashCode()
+    {
+        return (_hasValueFlag & 1) == 1
+            ? _value!.GetHashCode()
+            : 0;
+    }
 
-        public static bool operator !=(
-            Maybe<T> left,
-            Maybe<T> right) =>
-                !left.Equals(right);
+    [Pure]
+    public static bool operator ==(
+        Maybe<T> left,
+        Maybe<T> right)
+    {
+        return left.Equals(right);
+    }
+
+    [Pure]
+    public static bool operator !=(
+        Maybe<T> left,
+        Maybe<T> right)
+    {
+        return !left.Equals(right);
+    }
+
+    [Pure]
+    public static bool operator ==(
+        T? value,
+        Maybe<T> maybe)
+    {
+        return maybe.Equals(value);
+    }
+
+    [Pure]
+    public static bool operator !=(
+        T? value,
+        Maybe<T> maybe)
+    {
+        return !maybe.Equals(value);
+    }
+
+    [Pure]
+    public static bool operator ==(
+        Maybe<T> maybe,
+        T? value)
+    {
+        return maybe.Equals(value);
+    }
+
+    [Pure]
+    public static bool operator !=(
+        Maybe<T> maybe,
+        T? value)
+    {
+        return !maybe.Equals(value);
     }
 }

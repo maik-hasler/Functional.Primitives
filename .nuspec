@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>Functional.Primitives.Maybe</id>
         <description>This Maybe implementation offers a functional approach to handle optional values, eliminating null-related issues. It enables concise and safe chaining of operations on values that may or may not be present, promoting clean and expressive code in scenarios requiring null safety and composability.</description>
         <authors>Maik Hasler</authors>
         <tags>Functional Maybe Optional Null NullSafety</tags>
@@ -11,8 +10,6 @@
         <tags>Selenium WebDriver</tags>
         <repository type="git">https://github.com/maik-hasler/SeleniumSharper</repository>
         <frameworkAssemblies>
-            <frameworkAssembly assemblyName="netstandard2.0" targetFramework="netstandard2.0" />
-            <frameworkAssembly assemblyName="netstandard2.1" targetFramework="netstandard2.1" />
             <frameworkAssembly assemblyName="Microsoft.NETCore.App" targetFramework="net6.0" />
             <frameworkAssembly assemblyName="Microsoft.NETCore.App" targetFramework="net7.0" />
             <frameworkAssembly assemblyName="Microsoft.NETCore.App" targetFramework="net8.0" />
