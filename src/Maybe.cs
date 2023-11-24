@@ -19,9 +19,12 @@ namespace Functional.Primitives.Maybe
         /// </summary>
         /// <param name="value">The optional value to store.</param>
         public Maybe(
+#if NET6_0_OR_GREATER
+            [AllowNull]
+#endif
             T value)
         {
-            _value = value;
+            _value = value ?? throw new ArgumentNullException(nameof(value));
             _hasValueFlag = 1;
         }
 
