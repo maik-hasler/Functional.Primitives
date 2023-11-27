@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Functional.Primitives.Maybe.csproj" />
+    <ProjectReference Include="..\..\src\Functional.Primitives.Maybe\Functional.Primitives.Maybe.csproj" />
   </ItemGroup>
 
 </Project>
